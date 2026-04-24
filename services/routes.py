@@ -191,8 +191,10 @@ def modify_content(content_id, content_type):
             return render_template("edit.html", comment=comment, post=None)
 
     elif request.method == "POST":
-        if session["csrf_token"] != request.form["csrf_token"]:
-            abort(403)
+        # Flaw 1: missing CSRF token verification. Because the token is not verified in the backend, anyone can modify anyone's content. To fix this, the following lines should be uncommented to perform a token check (frontend has hidden inputs for passing tokens in place) when a request is handled.
+        # if session["csrf_token"] != request.form["csrf_token"]:
+        #    abort(403)
+
         authenticated_user = auth.user_id()
         method = request.form["method"]
         match (content_type, method):

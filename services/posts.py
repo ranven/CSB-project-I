@@ -92,9 +92,16 @@ def delete_post(post_id, user_id):
 
 
 def update_post(post_id, content, title, user_id):
-    sql = "UPDATE posts SET content = :content, title = :title, edited_at = CURRENT_TIMESTAMP WHERE post_id = :post_id AND user_id = :user_id"
+    # Flaw 1 (A01): user id is not checked on post edit, and allows any logged in user to edit any post. To fix this, the SQL clause should include allowing only an operation where the user id of the request matches that of the post.
+
+    sql = "UPDATE posts SET content = :content, title = :title, edited_at = CURRENT_TIMESTAMP WHERE post_id = :post_id"
     db.session.execute(
-        sql, {"post_id": post_id, "user_id": user_id, "content": content, "title": title})
+        sql, {"post_id": post_id, "content": content, "title": title})
+
+    # Fix: include user id in the SQL clause and as a variable in the db execution command as follows:
+    # sql = "UPDATE posts SET content = :content, title = :title, edited_at = CURRENT_TIMESTAMP WHERE post_id = :post_id AND user_id = :user_id"
+    # db.session.execute(sql, {"post_id": post_id, "user_id": user_id, "content": content, "title": title})
+
     db.session.commit()
     return True
 
