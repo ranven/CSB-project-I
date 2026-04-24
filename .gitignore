@@ -1,3 +1,5 @@
 __pycache__
 venv
 todo.txt
+# Flaw 2 (A05) fix: uncomment the following line in the .gitignore file to hide .env files from git. However, this does not change the fact that the environment variables were previously exposed, so the exposed .env file will be accessible in the version history even if the next line is un-commented. To fix this, the keys (database url and password) should be replaced entirely inside the .env file after uncommenting the next line, and the file deleted and re-created to purge any git file history caching for the updated keys.
+# .env
