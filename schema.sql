@@ -2,7 +2,8 @@ CREATE TABLE IF NOT EXISTS users(
     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
 	password TEXT NOT NULL,
 	username TEXT UNIQUE NOT NULL,
-	failed_attempts INTEGER DEFAULT 0
+	failed_attempts INTEGER DEFAULT 0,
+	locked_until TEXT
 	);
 
 CREATE TABLE IF NOT EXISTS posts(
