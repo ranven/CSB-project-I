@@ -1,3 +1,4 @@
+from sqlalchemy import text
 from flask import session
 from services.db import db
 import services.auth as auth
@@ -28,8 +29,8 @@ def update_profile(description, country):
     db.session.execute(
         f"UPDATE profiles SET description='{description}', country='{country}' WHERE user_id = {user_id}")
 
-    # Fix: To fix this, we need to use secure, parameterized queries that are passed rather than "joined" it to the SQL query and executed as code. This way, the database treats the user-input parameters as strings to save to the table; rather than SQL to execute. The following lines implement this parameterization
-    # sql = "UPDATE profiles SET description=:description, country=:country WHERE user_id =:user_id"
+    # Fix: To fix this, the update clause needs to use secure parameters that are passed rather than "joined" to the SQL query and executed as code. This way, the database treats the user-input parameters as strings to save to the table rather than SQL to execute. The following lines implement this parameterization
+    # sql = text("UPDATE profiles SET description=:description, country=:country WHERE user_id =:user_id")
     # db.session.execute(sql, {"description": description, "country": country, "user_id": user_id})
 
     db.session.commit()
